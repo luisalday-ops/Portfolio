@@ -328,6 +328,8 @@ public class inventory extends javax.swing.JFrame {
 
     private void JButton(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JButton
         // TODO add your handling code here:
+        new tienda().setVisible(true);
+        this.dispose();            // (Opcional) cerrar la ventana actual
     }//GEN-LAST:event_JButton
 
     /**

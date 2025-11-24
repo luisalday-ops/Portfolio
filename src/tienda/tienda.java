@@ -21,6 +21,8 @@ public class tienda extends javax.swing.JFrame {
      */
     public tienda() {
         initComponents();
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
     /**
