@@ -20,12 +20,7 @@ public class tienda extends javax.swing.JFrame {
      * Creates new form inventory
      */
     public tienda() {
-        super("Ventana Secundaria");
-        // Configuraciones básicas
-        setSize(400, 300);
-        setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE); 
-        // Nota: A menudo se usa HIDE_ON_CLOSE o DISPOSE_ON_CLOSE 
-        // para ventanas secundarias, pero EXIT es común para ejemplos simples.
+        initComponents();
     }
 
     /**

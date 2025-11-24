@@ -5,7 +5,6 @@
 
 package tienda;
 
-import java.awt.BorderLayout;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -21,28 +20,7 @@ public class inventory extends javax.swing.JFrame {
      * Creates new form inventory
      */
     public inventory() {
-        super("Ventana Principal");
-        setSize(500, 400);
-        setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-        
-        JButton changeButton = new JButton("Ir a la Ventana Secundaria");
-        
-        // --- Implementación de la Lógica del Cambio ---
-        changeButton.addActionListener(e -> {
-            
-            // 1. Ocultar la ventana actual (el MainFrame)
-            // 'this' se refiere a la instancia actual del MainFrame
-            this.setVisible(false); 
-            
-            // 2. Crear una instancia de la nueva ventana
-            tienda tienda = new tienda();
-            
-            // 3. Mostrar la nueva ventana
-            tienda.setVisible(true);
-        });
-        // ----------------------------------------------
-        
-        add(changeButton, BorderLayout.CENTER);
+        initComponents();
     }
     
     /**
