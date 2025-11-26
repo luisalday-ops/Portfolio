@@ -8,6 +8,7 @@ package tienda;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -25,6 +26,37 @@ public class tienda extends javax.swing.JFrame {
         setVisible(true);
     }
 
+    private void actualizarInventario(int id, int cantidadVendida) {
+
+    // Primero leer la cantidad actual del inventario
+    String query = "SELECT quantity FROM inventory WHERE id = " + id;
+    List<Map<String, Object>> resultado = bd.ejecutarConsulta(query, configuration);
+
+    if (resultado.isEmpty()) {
+        System.out.println("Producto no encontrado");
+        return;
+    }
+
+    int cantidadActual = Integer.parseInt(resultado.get(0).get("quantity").toString());
+
+    // Calcular nueva cantidad
+    int nuevaCantidad = cantidadActual - cantidadVendida;
+
+    if (nuevaCantidad < 0) {
+        System.out.println("No hay suficiente inventario");
+        return;
+    }
+
+    // Crear mapa para actualizar
+    Map datos = new HashMap();
+    datos.put("quantity", nuevaCantidad);
+
+    // Actualizar tabla inventory
+    bd.actualizar(id, datos, configuration, "inventory");
+
+    System.out.println("Inventario actualizado: " + nuevaCantidad);
+}
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -61,16 +93,15 @@ public class tienda extends javax.swing.JFrame {
         tf_id.setEnabled(false);
         tf_id.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tf_idActionPerformed(evt);
+                tf_id(evt);
             }
         });
 
         lb_name.setText("Name");
 
-        tf_name.setEnabled(false);
         tf_name.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tf_nameActionPerformed(evt);
+                tf_name(evt);
             }
         });
 
@@ -79,7 +110,7 @@ public class tienda extends javax.swing.JFrame {
         tf_unit_price.setEnabled(false);
         tf_unit_price.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tf_unit_priceActionPerformed(evt);
+                tf_unit_price(evt);
             }
         });
 
@@ -87,23 +118,28 @@ public class tienda extends javax.swing.JFrame {
 
         tf_quantities_sold.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tf_quantities_soldActionPerformed(evt);
+                tf_quantities_sold(evt);
             }
         });
 
         tbl_tienda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Name", "Quantities sold", "Unit price", "Date sale", "Total"
+                "ID", "Name", "Quantities sold", "Unit price", "Date sale", "Total"
             }
         ));
         tbl_tienda.setEnabled(false);
         tbl_tienda.getTableHeader().setReorderingAllowed(false);
+        tbl_tienda.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                get_data(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbl_tienda);
 
         btn_create.setText("Create");
@@ -125,7 +161,7 @@ public class tienda extends javax.swing.JFrame {
         tf_date_sale.setEnabled(false);
         tf_date_sale.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tf_date_saleActionPerformed(evt);
+                tf_date_sale(evt);
             }
         });
 
@@ -134,7 +170,7 @@ public class tienda extends javax.swing.JFrame {
         tf_total.setEnabled(false);
         tf_total.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tf_totalActionPerformed(evt);
+                tf_total(evt);
             }
         });
 
@@ -221,21 +257,21 @@ public class tienda extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tf_idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_idActionPerformed
+    private void tf_id(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_id
         // TODO add your handling code here:
-    }//GEN-LAST:event_tf_idActionPerformed
+    }//GEN-LAST:event_tf_id
 
-    private void tf_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_nameActionPerformed
+    private void tf_name(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_name
         // TODO add your handling code here:
-    }//GEN-LAST:event_tf_nameActionPerformed
+    }//GEN-LAST:event_tf_name
 
-    private void tf_unit_priceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_unit_priceActionPerformed
+    private void tf_unit_price(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_unit_price
         // TODO add your handling code here:
-    }//GEN-LAST:event_tf_unit_priceActionPerformed
+    }//GEN-LAST:event_tf_unit_price
 
-    private void tf_quantities_soldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_quantities_soldActionPerformed
+    private void tf_quantities_sold(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_quantities_sold
         // TODO add your handling code here:
-    }//GEN-LAST:event_tf_quantities_soldActionPerformed
+    }//GEN-LAST:event_tf_quantities_sold
 
     private void clean() {
         tf_id.setText("");
@@ -291,17 +327,40 @@ public class tienda extends javax.swing.JFrame {
         
         bd.actualizar(id, datos, configuration, tabla);
         
+    //Actualizar decrecientemente la tabla inventory.
+        int idProducto = Integer.parseInt(tf_id.getText());
+        int cantidadVendida = Integer.parseInt(tf_quantities_sold.getText());
+
+        // Actualizar inventario
+        actualizarInventario(idProducto, cantidadVendida);
+
+        // (Opcional) mensaje
+        JOptionPane.showMessageDialog(this, "Venta registrada y stock actualizado");
+        
         clean();
         table_update();
     }//GEN-LAST:event_create
 
-    private void tf_date_saleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_date_saleActionPerformed
+    private void tf_date_sale(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_date_sale
         // TODO add your handling code here:
-    }//GEN-LAST:event_tf_date_saleActionPerformed
+    }//GEN-LAST:event_tf_date_sale
 
-    private void tf_totalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_totalActionPerformed
+    private void tf_total(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_total
         // TODO add your handling code here:
-    }//GEN-LAST:event_tf_totalActionPerformed
+    }//GEN-LAST:event_tf_total
+
+    private void get_data(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_get_data
+        // TODO add your handling code here:
+        int fila = tbl_tienda.getSelectedRow();
+        if (fila >= 0){
+            tf_id.setText(tbl_tienda.getValueAt(fila, 0).toString());
+            tf_name.setText(tbl_tienda.getValueAt(fila, 1).toString());
+            tf_quantities_sold.setText(tbl_tienda.getValueAt(fila, 2).toString());
+            tf_unit_price.setText(tbl_tienda.getValueAt(fila, 3).toString());
+            tf_date_sale.setText(tbl_tienda.getValueAt(fila, 4).toString());
+            tf_total.setText(tbl_tienda.getValueAt(fila, 5).toString());
+        }
+    }//GEN-LAST:event_get_data
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_create;
@@ -324,7 +383,7 @@ public class tienda extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     String [] configuration = {"localhost", "root", "adminadmin", "portfolio"};
-    String tabla = "sales";
+    String tabla = "sales";  
     String [] campos = {"name", "quantities_sold", "unit_price", "date_sale", "total"};
     MySQLGenerico bd = new MySQLGenerico();
 }

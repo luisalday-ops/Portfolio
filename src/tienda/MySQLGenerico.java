@@ -140,5 +140,9 @@ public class MySQLGenerico {
             cerrar(null, pstmt, conn);
         }
     }
+
+    List<Map<String, Object>> ejecutarConsulta(String query, String[] configuration) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
 
