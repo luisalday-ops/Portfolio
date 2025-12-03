@@ -8,7 +8,6 @@ package tienda;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -25,37 +24,6 @@ public class tienda extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
-
-    private void actualizarInventario(int id, int cantidadVendida) {
-
-    // Primero leer la cantidad actual del inventario
-    String query = "SELECT quantity FROM inventory WHERE id = " + id;
-    List<Map<String, Object>> resultado = bd.ejecutarConsulta(query, configuration);
-
-    if (resultado.isEmpty()) {
-        System.out.println("Producto no encontrado");
-        return;
-    }
-
-    int cantidadActual = Integer.parseInt(resultado.get(0).get("quantity").toString());
-
-    // Calcular nueva cantidad
-    int nuevaCantidad = cantidadActual - cantidadVendida;
-
-    if (nuevaCantidad < 0) {
-        System.out.println("No hay suficiente inventario");
-        return;
-    }
-
-    // Crear mapa para actualizar
-    Map datos = new HashMap();
-    datos.put("quantity", nuevaCantidad);
-
-    // Actualizar tabla inventory
-    bd.actualizar(id, datos, configuration, "inventory");
-
-    System.out.println("Inventario actualizado: " + nuevaCantidad);
-}
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -69,12 +37,13 @@ public class tienda extends javax.swing.JFrame {
         lab_tittle = new javax.swing.JLabel();
         lab_id = new javax.swing.JLabel();
         tf_id = new javax.swing.JTextField();
-        lb_name = new javax.swing.JLabel();
-        tf_name = new javax.swing.JTextField();
+        lb_product_name = new javax.swing.JLabel();
+        tf_product_name = new javax.swing.JTextField();
         lb_sale_price = new javax.swing.JLabel();
         tf_unit_price = new javax.swing.JTextField();
         lb_quantities_sold = new javax.swing.JLabel();
         tf_quantities_sold = new javax.swing.JTextField();
+        JButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_tienda = new javax.swing.JTable();
         btn_create = new javax.swing.JButton();
@@ -83,6 +52,7 @@ public class tienda extends javax.swing.JFrame {
         tf_date_sale = new javax.swing.JTextField();
         lb_total = new javax.swing.JLabel();
         tf_total = new javax.swing.JTextField();
+        JButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -97,17 +67,16 @@ public class tienda extends javax.swing.JFrame {
             }
         });
 
-        lb_name.setText("Name");
+        lb_product_name.setText("Product Name");
 
-        tf_name.addActionListener(new java.awt.event.ActionListener() {
+        tf_product_name.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tf_name(evt);
+                tf_product_name(evt);
             }
         });
 
         lb_sale_price.setText("Unit price");
 
-        tf_unit_price.setEnabled(false);
         tf_unit_price.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tf_unit_price(evt);
@@ -122,6 +91,13 @@ public class tienda extends javax.swing.JFrame {
             }
         });
 
+        JButton.setText("Inventory");
+        JButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JButton(evt);
+            }
+        });
+
         tbl_tienda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -130,7 +106,7 @@ public class tienda extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Name", "Quantities sold", "Unit price", "Date sale", "Total"
+                "ID", "Product Name", "Quantities sold", "Unit price", "Date sale", "Total"
             }
         ));
         tbl_tienda.setEnabled(false);
@@ -158,7 +134,6 @@ public class tienda extends javax.swing.JFrame {
 
         lb_date_sale.setText("Date sale");
 
-        tf_date_sale.setEnabled(false);
         tf_date_sale.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tf_date_sale(evt);
@@ -167,10 +142,16 @@ public class tienda extends javax.swing.JFrame {
 
         lb_total.setText("Total");
 
-        tf_total.setEnabled(false);
         tf_total.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tf_total(evt);
+            }
+        });
+
+        JButton1.setText("Reports");
+        JButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JButton1(evt);
             }
         });
 
@@ -195,9 +176,9 @@ public class tienda extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(3, 3, 3)
-                                        .addComponent(lb_name, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(57, 57, 57)
-                                        .addComponent(tf_name, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(lb_product_name, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(tf_product_name, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(lb_quantities_sold)
@@ -210,12 +191,18 @@ public class tienda extends javax.swing.JFrame {
                                     .addComponent(lb_date_sale))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btn_create)
-                                    .addComponent(btn_read)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btn_create)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(JButton1))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(97, 97, 97)
                                         .addComponent(tf_total, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(lb_total))
+                                    .addComponent(lb_total)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btn_read)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(JButton)))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(0, 19, Short.MAX_VALUE))))
         );
@@ -229,11 +216,13 @@ public class tienda extends javax.swing.JFrame {
                     .addComponent(tf_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lb_name)
-                    .addComponent(tf_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lb_product_name)
+                    .addComponent(tf_product_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(7, 7, 7)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_read)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btn_read)
+                        .addComponent(JButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lb_sale_price)
@@ -242,16 +231,17 @@ public class tienda extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lb_quantities_sold)
                             .addComponent(tf_quantities_sold, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_create))))
+                            .addComponent(btn_create)
+                            .addComponent(JButton1))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lb_date_sale)
                     .addComponent(tf_date_sale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lb_total)
                     .addComponent(tf_total, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(7, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
@@ -261,9 +251,9 @@ public class tienda extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tf_id
 
-    private void tf_name(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_name
+    private void tf_product_name(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_product_name
         // TODO add your handling code here:
-    }//GEN-LAST:event_tf_name
+    }//GEN-LAST:event_tf_product_name
 
     private void tf_unit_price(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_unit_price
         // TODO add your handling code here:
@@ -275,7 +265,7 @@ public class tienda extends javax.swing.JFrame {
 
     private void clean() {
         tf_id.setText("");
-        tf_name.setText("");
+        tf_product_name.setText("");
         tf_quantities_sold.setText("");
         tf_unit_price.setText("");
         tf_date_sale.setText("");
@@ -289,7 +279,7 @@ public class tienda extends javax.swing.JFrame {
         for (Map<String, Object> fila : datos) {
             model.addRow(new Object[] {
                     fila.get("id"),
-                    fila.get("name"),
+                    fila.get("product_name"),
                     fila.get("quantities_sold"),
                     fila.get("unit_price"),
                     fila.get("date_sale"),
@@ -306,7 +296,7 @@ public class tienda extends javax.swing.JFrame {
         for (Map<String, Object> fila : datos) {
             model.addRow(new Object[] {
                     fila.get("id"),
-                    fila.get("name"),
+                    fila.get("product_name"),
                     fila.get("quantities_sold"),
                     fila.get("unit_price"),
                     fila.get("date_sale"),
@@ -317,26 +307,15 @@ public class tienda extends javax.swing.JFrame {
 
     private void create(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_create
         // TODO add your handling code here:
-        int id = Integer.parseInt(tf_id.getText());
         Map datos = new HashMap();
-        datos.put(campos[0], tf_name.getText());
+        datos.put(campos[0], tf_product_name.getText());
         datos.put(campos[1], tf_quantities_sold.getText());
         datos.put(campos[2], tf_unit_price.getText());
         datos.put(campos[3], tf_date_sale.getText());
         datos.put(campos[4], tf_total.getText());
         
-        bd.actualizar(id, datos, configuration, tabla);
-        
-    //Actualizar decrecientemente la tabla inventory.
-        int idProducto = Integer.parseInt(tf_id.getText());
-        int cantidadVendida = Integer.parseInt(tf_quantities_sold.getText());
+        bd.crear(datos, configuration, tabla);
 
-        // Actualizar inventario
-        actualizarInventario(idProducto, cantidadVendida);
-
-        // (Opcional) mensaje
-        JOptionPane.showMessageDialog(this, "Venta registrada y stock actualizado");
-        
         clean();
         table_update();
     }//GEN-LAST:event_create
@@ -354,7 +333,7 @@ public class tienda extends javax.swing.JFrame {
         int fila = tbl_tienda.getSelectedRow();
         if (fila >= 0){
             tf_id.setText(tbl_tienda.getValueAt(fila, 0).toString());
-            tf_name.setText(tbl_tienda.getValueAt(fila, 1).toString());
+            tf_product_name.setText(tbl_tienda.getValueAt(fila, 1).toString());
             tf_quantities_sold.setText(tbl_tienda.getValueAt(fila, 2).toString());
             tf_unit_price.setText(tbl_tienda.getValueAt(fila, 3).toString());
             tf_date_sale.setText(tbl_tienda.getValueAt(fila, 4).toString());
@@ -362,21 +341,35 @@ public class tienda extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_get_data
 
+    private void JButton(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JButton
+        // TODO add your handling code here:
+        new inventory().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_JButton
+
+    private void JButton1(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JButton1
+        // TODO add your handling code here:
+        new report().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_JButton1
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton JButton;
+    private javax.swing.JButton JButton1;
     private javax.swing.JButton btn_create;
     private javax.swing.JButton btn_read;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lab_id;
     private javax.swing.JLabel lab_tittle;
     private javax.swing.JLabel lb_date_sale;
-    private javax.swing.JLabel lb_name;
+    private javax.swing.JLabel lb_product_name;
     private javax.swing.JLabel lb_quantities_sold;
     private javax.swing.JLabel lb_sale_price;
     private javax.swing.JLabel lb_total;
     private javax.swing.JTable tbl_tienda;
     private javax.swing.JTextField tf_date_sale;
     private javax.swing.JTextField tf_id;
-    private javax.swing.JTextField tf_name;
+    private javax.swing.JTextField tf_product_name;
     private javax.swing.JTextField tf_quantities_sold;
     private javax.swing.JTextField tf_total;
     private javax.swing.JTextField tf_unit_price;
@@ -384,6 +377,6 @@ public class tienda extends javax.swing.JFrame {
 
     String [] configuration = {"localhost", "root", "adminadmin", "portfolio"};
     String tabla = "sales";  
-    String [] campos = {"name", "quantities_sold", "unit_price", "date_sale", "total"};
+    String [] campos = {"product_name", "quantities_sold", "unit_price", "date_sale", "total"};
     MySQLGenerico bd = new MySQLGenerico();
 }

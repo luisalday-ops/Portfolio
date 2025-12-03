@@ -41,9 +41,9 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
                                       <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-                                      <Component id="lb_name" min="-2" pref="37" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
-                                      <Component id="tf_name" min="-2" pref="71" max="-2" attributes="0"/>
+                                      <Component id="lb_product_name" min="-2" pref="82" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="tf_product_name" min="-2" pref="71" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
@@ -61,13 +61,21 @@
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="btn_create" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btn_read" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Component id="btn_create" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="JButton1" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="97" pref="97" max="-2" attributes="0"/>
                                       <Component id="tf_total" min="-2" pref="71" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="lb_total" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="btn_read" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="JButton" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
@@ -89,12 +97,15 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lb_name" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="tf_name" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lb_product_name" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="tf_product_name" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="btn_read" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="btn_read" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="JButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="lb_sale_price" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -105,6 +116,7 @@
                           <Component id="lb_quantities_sold" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="tf_quantities_sold" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btn_create" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="JButton1" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -115,9 +127,9 @@
                   <Component id="lb_total" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="tf_total" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="275" max="-2" attributes="0"/>
-              <EmptySpace pref="7" max="32767" attributes="0"/>
+              <EmptySpace pref="20" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -141,14 +153,14 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tf_id"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="lb_name">
+    <Component class="javax.swing.JLabel" name="lb_product_name">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Name"/>
+        <Property name="text" type="java.lang.String" value="Product Name"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="tf_name">
+    <Component class="javax.swing.JTextField" name="tf_product_name">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tf_name"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tf_product_name"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lb_sale_price">
@@ -157,9 +169,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="tf_unit_price">
-      <Properties>
-        <Property name="enabled" type="boolean" value="false"/>
-      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tf_unit_price"/>
       </Events>
@@ -174,6 +183,14 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tf_quantities_sold"/>
       </Events>
     </Component>
+    <Component class="javax.swing.JButton" name="JButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Inventory"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JButton"/>
+      </Events>
+    </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
@@ -186,7 +203,7 @@
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="6" rowCount="4">
                 <Column editable="true" title="ID" type="java.lang.Object"/>
-                <Column editable="true" title="Name" type="java.lang.Object"/>
+                <Column editable="true" title="Product Name" type="java.lang.Object"/>
                 <Column editable="true" title="Quantities sold" type="java.lang.Object"/>
                 <Column editable="true" title="Unit price" type="java.lang.Object"/>
                 <Column editable="true" title="Date sale" type="java.lang.Object"/>
@@ -260,9 +277,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="tf_date_sale">
-      <Properties>
-        <Property name="enabled" type="boolean" value="false"/>
-      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tf_date_sale"/>
       </Events>
@@ -273,11 +287,16 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="tf_total">
-      <Properties>
-        <Property name="enabled" type="boolean" value="false"/>
-      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tf_total"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="JButton1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Reports"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JButton1"/>
       </Events>
     </Component>
   </SubComponents>

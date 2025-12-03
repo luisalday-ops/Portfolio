@@ -21,6 +21,8 @@ public class inventory extends javax.swing.JFrame {
      */
     public inventory() {
         initComponents();
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
     
     /**
@@ -50,6 +52,7 @@ public class inventory extends javax.swing.JFrame {
         btn_read = new javax.swing.JButton();
         btn_update = new javax.swing.JButton();
         JButton = new javax.swing.JButton();
+        btn_reports = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -150,6 +153,13 @@ public class inventory extends javax.swing.JFrame {
             }
         });
 
+        btn_reports.setText("Reports");
+        btn_reports.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_reports(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -189,11 +199,15 @@ public class inventory extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btn_create)
                             .addComponent(btn_delete)
-                            .addComponent(btn_read)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btn_update)
-                                .addGap(48, 48, 48)
-                                .addComponent(JButton)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(btn_read)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btn_reports))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(btn_update)
+                                    .addGap(48, 48, 48)
+                                    .addComponent(JButton))))
                         .addGap(0, 56, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -218,7 +232,8 @@ public class inventory extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lb_sale_price)
                     .addComponent(tf_sale_price, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_read))
+                    .addComponent(btn_read)
+                    .addComponent(btn_reports))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lb_quantity)
@@ -348,6 +363,12 @@ public class inventory extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_get_data
 
+    private void btn_reports(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reports
+        // TODO add your handling code here:
+        new report().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_reports
+
     /**
      * @param args the command line arguments
      */
@@ -387,6 +408,7 @@ public class inventory extends javax.swing.JFrame {
     private javax.swing.JButton btn_create;
     private javax.swing.JButton btn_delete;
     private javax.swing.JButton btn_read;
+    private javax.swing.JButton btn_reports;
     private javax.swing.JButton btn_update;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lab_id;
